@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">
+    <style>
+        body {
+            background-color: #000;
+            color: #FFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .table-container {
+            max-height: 600px; /* Увеличенная высота для таблицы */
+            overflow-y: auto;  /* Включение вертикальной прокрутки */
+            margin-top: 20px;
+            position: relative;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            background-color: transparent;
+            border: 1px solid #ffffff;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            position: sticky;
+            top: 0; /* Фиксируем заголовок в верхней части */
+            z-index: 10; /* Убедитесь, что заголовок выше остальных ячеек */
+        }
+        .ant-input {
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            padding: 10px; /* Увеличенный отступ для полей ввода */
+            font-size: 13px; /* Увеличенный размер шрифта */
+            width: 300px; /* Ширина полей ввода на 300px */
+            height: 40px; /* Высота полей ввода на 40px */
+        }
+        .ant-btn {
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            margin: -10px auto 5px; /* Центрирование кнопки и добавление отступа снизу */
+            width: 200px; /* Уменьшенная ширина кнопки */
+            display: block; /* Делает кнопку блочным элементом */
+        }
+        .home-button {
+            position: relative;
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            width: 255px; /* Ширина полей ввода на 300px */
+            padding: 8px; /* Увеличенный отступ для полей ввода */
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="home-button" onclick="goToHome()">Home</button> <!-- Кнопка "Home" -->
+
+    <div class="ant-space ant-space-vertical ant-space-align-center" style="width: 100%;">
+        <div class="ant-form ant-form-vertical">
+            <div class="ant-row ant-form-item" style="justify-content: center;">
+                <div class="ant-col ant-col-8">
+                    <div class="ant-form-item-control">
+                        <input id="totalTasks" class="ant-input" type="number" max="1000" placeholder="Количество аккаунтов (max 1000)">
+                    </div>
+                    <div class="ant-form-item-control" style="margin-top: 5px;"></div>
+                </div>
+                <div class="ant-col ant-col-8">
+                    <div class="ant-form-item-control">
+                        <input id="daysToComplete" class="ant-input" type="number" max="31" placeholder="Количество дней (max 31)">
+                    </div>
+                </div>
+            </div>
+            <div class="ant-form-item-control" style="margin-top: 10px;">
+                <button class="ant-btn" onclick="generateTasks()">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container" id="tableContainer">
+        <table id="taskTable">
+            <thead class="ant-table-thead">
+            <tr>
+                <th>Day</th>
+                <th>Wallets</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody" class="ant-table-tbody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let dailyTasks = [];
+
+    function shuffleTasks(totalTasks) {
+        let allTasks = Array.from({length: totalTasks}, (_, i) => i + 1);
+        allTasks.sort(() => Math.random() - 0.5);
+        return allTasks;
+    }
+
+    function generateTasks() {
+        const totalTasks = parseInt(document.getElementById('totalTasks').value);
+        const daysToComplete = parseInt(document.getElementById('daysToComplete').value);
+
+        if (totalTasks <= 0 || totalTasks > 1000 || daysToComplete <= 0 || daysToComplete > 31) {
+            alert('Убедитесь, что введены корректные данные (макс. 1000 аккаунтов и 31 день).');
+            return;
+        }
+
+        const allTasks = shuffleTasks(totalTasks);
+        const tasksPerDayMin = Math.floor(totalTasks / daysToComplete);
+        const extraTasksDays = totalTasks % daysToComplete;
+        const tasksList = [];
+        let currentTaskIndex = 0;
+
+        for (let day = 0; day < daysToComplete; day++) {
+            const tasksToday = tasksPerDayMin + (day < extraTasksDays ? 1 : 0);
+            const tasksForToday = allTasks.slice(currentTaskIndex, currentTaskIndex + tasksToday);
+            tasksList.push({day: `Day ${day + 1}`, tasks: tasksForToday.join(', ')});
+            currentTaskIndex += tasksToday;
+        }
+
+        dailyTasks = tasksList.map(item => ({
+            day: item.day,
+            tasks: item.tasks.split(', ').sort((a, b) => a - b).join(', ')
+        }));
+
+        updateTaskTable();
+    }
+
+    function updateTaskTable() {
+        const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = '';
+
+        dailyTasks.forEach(item => {
+            const row = document.createElement('tr');
+            const dayCell = document.createElement('td');
+            const tasksCell = document.createElement('td');
+            dayCell.innerText = item.day;
+            tasksCell.innerText = item.tasks;
+            row.appendChild(dayCell);
+            row.appendChild(tasksCell);
+            tableBody.appendChild(row);
+        });
+    }
+
+    function goToHome() {
+        window.location.href = 'Main.html';
+    }
+</script>
+</body>
+</html>

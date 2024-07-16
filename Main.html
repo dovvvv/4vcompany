@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4vCompany</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .center-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background-color: transparent;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            margin: 10px 0;
+        }
+
+        .center-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-color: white;
+        }
+    </style>
+    <script>
+        function openSchedulePage() {
+            window.location.href = 'Schedule.html'; // Change this to the desired URL
+        }
+
+        function openOnchainToolsPage() {
+            window.location.href = 'OnchainTools.html'; // Change this to the desired URL
+        }
+
+        function openDappsPage() {
+            window.location.href = 'Dapps.html'; // Change this to the desired URL
+        }
+    </script>
+</head>
+<body>
+    <div class="center-container">
+        <button class="center-button" onclick="openSchedulePage()">Schedule</button>
+        <button class="center-button" onclick="openOnchainToolsPage()">Onchain Tools</button>
+        <button class="center-button" onclick="openDappsPage()">Dapps</button>
+        
+    </div>
+</body>
+</html>

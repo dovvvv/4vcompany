@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">
+    <style>
+        body {
+            background-color: #000;
+            color: #FFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .table-container {
+            max-height: 600px; /* Увеличенная высота для таблицы */
+            overflow-y: auto;  /* Включение вертикальной прокрутки */
+            margin-top: 20px;
+            position: relative;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            background-color: transparent;
+            border: 1px solid #ffffff;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #ffffff;
+            color: #000000;
+            position: sticky;
+            top: 0; /* Фиксируем заголовок в верхней части */
+            z-index: 10; /* Убедитесь, что заголовок выше остальных ячеек */
+        }
+        .ant-input {
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            padding: 10px; /* Увеличенный отступ для полей ввода */
+            font-size: 13px; /* Увеличенный размер шрифта */
+            width: 300px; /* Ширина полей ввода на 300px */
+            height: 40px; /* Высота полей ввода на 40px */
+        }
+        .ant-btn {
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            margin: -10px auto 5px; /* Центрирование кнопки и добавление отступа снизу */
+            width: 200px; /* Уменьшенная ширина кнопки */
+            display: block; /* Делает кнопку блочным элементом */
+        }
+        .home-button {
+            position: relative;
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            width: 255px; /* Ширина полей ввода на 300px */
+            padding: 8px; /* Увеличенный отступ для полей ввода */
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+        .search-input {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #FFF;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="home-button" onclick="goToHome()">Home</button> <!-- Кнопка "Home" -->
+    <input type="text" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search for DApps..">
+
+    <div class="table-container">
+        <table id="dappTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody id="dappTableBody">
+                <tr>
+                    <td>SushiSwap</td>
+                    <td><a href="https://www.sushi.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Balancer</td>
+                    <td><a href="https://app.balancer.fi" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Mintfun</td>
+                    <td><a href="https://mint.fun" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Stargate</td>
+                    <td><a href="https://stargate.finance/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Bungee</td>
+                    <td><a href="https://www.bungee.exchange/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Odos</td>
+                    <td><a href="https://app.odos.xyz/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>PancakeSwap</td>
+                    <td><a href="https://pancakeswap.finance/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Maverick</td>
+                    <td><a href="https://app.mav.xyz/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Uniswap</td>
+                    <td><a href="https://app.uniswap.org/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Element</td>
+                    <td><a href="https://element.market/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Izumi Finance</td>
+                    <td><a href="https://izumi.finance/trade/swap" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Aerodrome</td>
+                    <td><a href="https://aerodrome.finance/swap" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Jumper</td>
+                    <td><a href="https://jumper.exchange/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>DefiLama</td>
+                    <td><a href="https://swap.defillama.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Aave</td>
+                    <td><a href="https://app.aave.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>PartyDAO</td>
+                    <td><a href="https://www.party.app/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Interport</td>
+                    <td><a href="https://app.interport.fi/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Thirdweb</td>
+                    <td><a href="https://thirdweb.com/dashboard/contracts/deploy" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Compound</td>
+                    <td><a href="https://app.compound.finance/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Seamless Protocol</td>
+                    <td><a href="https://app.seamlessprotocol.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Safe Global</td>
+                    <td><a href="https://app.safe.global/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Phi Protocol</td>
+                    <td><a href="https://phiprotocol.xyz/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Satori</td>
+                    <td><a href="https://satori.finance/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Zora</td>
+                    <td><a href="https://zora.co/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Merkly</td>
+                    <td><a href="https://minter.merkly.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Guild</td>
+                    <td><a href="https://guild.xyz/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Skydrome</td>
+                    <td><a href="https://app.skydrome.finance/swap" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Owlto</td>
+                    <td><a href="https://owlto.finance/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Oku Trade</td>
+                    <td><a href="https://oku.trade/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Ambient Finance</td>
+                    <td><a href="https://ambient.finance/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Symbiosis</td>
+                    <td><a href="https://app.symbiosis.finance/swap" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>XY Finance</td>
+                    <td><a href="https://app.xy.finance/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Zebra</td>
+                    <td><a href="https://app.zebra.xyz/#/swap" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Router Nitro</td>
+                    <td><a href="https://app.routernitro.com/swap" target="_blank">Ссылка</a></td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function goToHome() {
+        window.location.href = 'Main.html';
+    }
+
+    function searchTable() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById("dappTable");
+        const trs = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < trs.length; i++) {
+            const tds = trs[i].getElementsByTagName("td");
+            let match = false;
+            for (let j = 0; j < tds.length; j++) {
+                if (tds[j]) {
+                    const textValue = tds[j].textContent || tds[j].innerText;
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+            trs[i].style.display = match ? "" : "none";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">
+    <style>
+        body {
+            background-color: #000;
+            color: #FFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .table-container {
+            max-height: 600px; /* Увеличенная высота для таблицы */
+            overflow-y: auto;  /* Включение вертикальной прокрутки */
+            margin-top: 20px;
+            position: relative;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            background-color: transparent;
+            border: 1px solid #ffffff;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #ffffff;
+            color: #000000;
+            position: sticky;
+            top: 0; /* Фиксируем заголовок в верхней части */
+            z-index: 10; /* Убедитесь, что заголовок выше остальных ячеек */
+        }
+        .ant-input {
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            padding: 10px; /* Увеличенный отступ для полей ввода */
+            font-size: 13px; /* Увеличенный размер шрифта */
+            width: 300px; /* Ширина полей ввода на 300px */
+            height: 40px; /* Высота полей ввода на 40px */
+        }
+        .ant-btn {
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            margin: -10px auto 5px; /* Центрирование кнопки и добавление отступа снизу */
+            width: 200px; /* Уменьшенная ширина кнопки */
+            display: block; /* Делает кнопку блочным элементом */
+        }
+        .home-button {
+            position: relative;
+            background-color: transparent;
+            border: 1px solid #FFF;
+            color: #FFF;
+            width: 255px; /* Ширина полей ввода на 300px */
+            padding: 8px; /* Увеличенный отступ для полей ввода */
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+        .search-input {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #FFF;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="home-button" onclick="goToHome()">Home</button> <!-- Кнопка "Home" -->
+    <input type="text" id="searchInput" class="search-input" onkeyup="searchTable()" placeholder="Search for DApps..">
+
+    <div class="table-container">
+        <table id="dappTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody id="dappTableBody">
+                <tr>
+                    <td>Arkham</td>
+                    <td><a href="https://platform.arkhamintelligence.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Cryptorank</td>
+                    <td><a href="https://cryptorank.io/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Nansen</td>
+                    <td><a href="https://app.nansen.ai/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Cypherhunter</td>
+                    <td><a href="https://www.cypherhunter.com/en/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Chainbroker</td>
+                    <td><a href="https://chainbroker.io/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Coinmarketcap</td>
+                    <td><a href="https://coinmarketcap.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Cointrader</td>
+                    <td><a href="https://charts.cointrader.pro/" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>DropsTab</td>
+                    <td><a href="https://dropstab.com/ua" target="_blank">Ссылка</a></td>
+                </tr>
+                <tr>
+                    <td>Dexscreener</td>
+                    <td><a href="https://dexscreener.com/" target="_blank">Ссылка</a></td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function goToHome() {
+        window.location.href = 'Main.html';
+    }
+
+    function searchTable() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById("dappTable");
+        const trs = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < trs.length; i++) {
+            const tds = trs[i].getElementsByTagName("td");
+            let match = false;
+            for (let j = 0; j < tds.length; j++) {
+                if (tds[j]) {
+                    const textValue = tds[j].textContent || tds[j].innerText;
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+            trs[i].style.display = match ? "" : "none";
+        }
+    }
+</script>
+</body>
+</html>
